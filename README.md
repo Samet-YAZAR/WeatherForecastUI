@@ -1,5 +1,10 @@
 # Weather-Forecast-UI
-
+# USED APIs 
+ * Weatherbit API
+   * Current Weather API
+   * Forecast API (16 day/ daily)
+ * Teleport APIs
+   * Urban areas (for city photos)
 ## Used language : React
 ### Use-case : 
   * Get weather forecast information for specific city
@@ -22,9 +27,4 @@
 ### Post Condition 
   * Requested information has provided to the user.
   
-# USED APIs 
- * Weatherbit API
-   * Current Weather API
-   * Forecast API (16 day/ daily)
- * Teleport APIs
-   * Urban areas (for city photos)
+
