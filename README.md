@@ -26,5 +26,8 @@
   
 ### Post Condition 
   * Requested information has provided to the user.
-  
+
+### Sample View 
+![GitHub Sample UI](/Assets/sampleCurrentWeather.PNG)
+
 
