@@ -28,6 +28,6 @@
   * Requested information has provided to the user.
 
 ### Sample View 
-![GitHub Sample UI](/Assets/sampleCurrentWeather.PNG)
+![GitHub Sample UI](src/Assets/sampleCurrentWeather.PNG)
 
 
