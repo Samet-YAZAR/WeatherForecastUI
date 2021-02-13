@@ -24,7 +24,7 @@
   
 # USED APIs 
  * Weatherbit API
-  * Current Weather API
-  * Forecast API (16 day/ daily)
+   * Current Weather API
+   * Forecast API (16 day/ daily)
  * Teleport APIs
-  * Urban areas (for city photos)
+   * Urban areas (for city photos)
