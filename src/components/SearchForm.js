@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class SearchForm extends Component {
 
     render() {
-        const { city, country } = this.props;
+        const { city, country, err } = this.props;
         return (
             <div>
                 <form>
@@ -36,9 +36,21 @@ class SearchForm extends Component {
                         <button onClick={(e) => {
                             e.preventDefault();
                             this.props.submit()
-                            }}
-                            className="btn btn-danger">Search 
+                        }}
+                            className="btn btn-danger">Search
                         </button>
+                    </div>
+                    <div>
+                        {
+                        err &&
+                        <label className=""
+                            style={{
+                                fontFamily: "sans-serif",
+                                color: "red",
+                                fontWeight: 'bold',
+                                marginLeft: "5px"
+                            }}>{err}</label>
+                        }
                     </div>
                 </form>
             </div>

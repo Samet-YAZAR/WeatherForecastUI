@@ -4,6 +4,7 @@ import WeatherTabBar from "./components/WeatherTabBar"
 import SelectedTab from "./components/SelectedTab"
 import SearchForm from "./components/SearchForm";
 import { Container, Row, Col } from "reactstrap";
+import { WeatherService } from "./services";
 import { Component } from 'react';
 import './App.css';
 
@@ -19,6 +20,7 @@ class App extends Component {
       forecast: [],
       current: [],
       loading: true,
+      error: ""
     }
   }
 
@@ -37,37 +39,20 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    const dataForecast = await this.getForecastWeather();
-    const dataUrbanPhotos = await this.getUrbanPhotos();
-    const dataCurrent = await this.getCurrentWeather();
+    const dataForecast = await WeatherService.getForecastWeather(this.state.city, this.state.country);
+    const dataCurrent = await WeatherService.getCurrentWeather(this.state.city, this.state.country);
+    const dataUrbanPhotos = await WeatherService.getUrbanPhotos(this.state.city);
 
     this.setState({
       current: dataCurrent,
       forecast: dataForecast,
       urbanPhotos: dataUrbanPhotos,
       loading: false,
-      weburl: dataUrbanPhotos.status == 404 ? "https://d13k13wj6adfdf.cloudfront.net/urban_areas/paris_web-0a3c7314a5.jpg" : dataUrbanPhotos.photos[0].image.web
+      weburl: dataUrbanPhotos.status == 404 ? `${process.env.REACT_APP_DEFAULT_IMAGE_URL}` : dataUrbanPhotos.photos[0].image.web
 
     })
 
     document.body.style.backgroundImage = `url(${this.state.weburl})`;
-  }
-  getCurrentWeather = async () => {
-    const url = `https://api.weatherbit.io/v2.0/current?city=${this.state.city}&country=${this.state.country}&key=${process.env.REACT_APP_API_KEY}`;
-    const responseCurrent = await fetch(url)
-    return await responseCurrent.json();
-  }
-
-  getForecastWeather = async () => {
-    const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${this.state.city}&country=${this.state.country}&key=${process.env.REACT_APP_API_KEY}`;
-    const responseForecast = await fetch(url)
-    return await responseForecast.json();
-  }
-
-  getUrbanPhotos = async () => {
-    const url = `https://api.teleport.org/api/urban_areas/slug:${this.state.city}/images/`;
-    const responseUrbanPhotos = await fetch(url)
-    return await responseUrbanPhotos.json();
   }
 
   ControlLoading = () => {
@@ -75,21 +60,22 @@ class App extends Component {
   }
 
   render() {
-
+    const { error } = this.state.error;
     return (
       <div className="container d-flex align-items-center ">
-
-        <Container className="wrapper fluid " >
-          {
-            this.ControlLoading() ? <Row>loading... </Row>
-              :
+        {
+          this.ControlLoading() ? <Row>loading... </Row>
+            :
+            <Container className="wrapper fluid " >
               <Row xs="1">
 
                 <Col className="col"><SearchForm
                   submit={this.componentDidMount}
                   setCity={this.setCity}
                   setCountry={this.setCountry}
-                /></Col>
+                  err={this.state.error}
+                />
+                </Col>
 
                 <Col className="tab"><WeatherTabBar
                   tabs={['Current', 'Forecast']}
@@ -106,10 +92,14 @@ class App extends Component {
                     <ForecastWeather forecasts={this.state.forecast} />
                   </SelectedTab>
 
-                </WeatherTabBar></Col>
+                </WeatherTabBar>
+                </Col>
+
+
               </Row>
-          }
-        </Container>
+            </Container>
+        }
+
       </div>
     )
   }
